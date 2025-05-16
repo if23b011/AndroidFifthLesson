@@ -33,8 +33,9 @@ abstract class AppDatabase: RoomDatabase() {
                 context.applicationContext,
                 AppDatabase::class.java,
                 "app_database"
+                // FIXME: DO NOT USE IN PRODUCTION, use Automigrations
             ).fallbackToDestructiveMigration(true).build()
-            return instance 
+            return instance
         }
     }
 }

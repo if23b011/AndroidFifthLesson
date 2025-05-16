@@ -14,5 +14,5 @@ interface MagicCardDao {
     suspend fun insertCards(cards: List<MagicCardEntity>) : List<Long>
 
     @Query("SELECT * FROM magic_card")
-    fun loadCards(): Flow<List<MagicCardEntity>>
+    fun loadAllCards(): Flow<List<MagicCardEntity>>
 }

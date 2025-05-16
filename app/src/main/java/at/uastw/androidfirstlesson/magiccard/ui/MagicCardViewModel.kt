@@ -22,8 +22,7 @@ data class MagicCardUiState(
 )
 
 class MagicCardViewModel(
-    private val magicCardRepository: MagicCardRepository
-    = MagicCardRepository(),
+    private val magicCardRepository: MagicCardRepository,
     private val settingsRepository: UserSettingsRepository
 ) : ViewModel() {
 
@@ -43,6 +42,13 @@ class MagicCardViewModel(
             settingsRepository.userSettings.collectLatest { userSettings ->
                 _magicCardUiState.update {
                     it.copy(userSettings = userSettings)
+                }
+            }
+        }
+        viewModelScope.launch {
+            magicCardRepository.magicCardsFromDb.collectLatest { cards ->
+                _magicCardUiState.update {
+                    it.copy(cards = cards)
                 }
             }
         }
@@ -68,9 +74,9 @@ class MagicCardViewModel(
             try {
                 // instead of parameter page we can also use
                 // _magicCardUiState.value.userSettings.page
-                val cards = magicCardRepository.loadCardPage(page)
+                magicCardRepository.loadCardPage(page)
                 _magicCardUiState.update {
-                    it.copy(cards = cards, isLoading = false, isError = false)
+                    it.copy(isLoading = false, isError = false)
                 }
             } catch (e: Exception) {
                 Log.e("ViewModel", "Error", e)

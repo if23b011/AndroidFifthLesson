@@ -14,7 +14,9 @@ object AppViewModelProvider {
 
         initializer {
             val application = this[APPLICATION_KEY] as MainApplication
-            MagicCardViewModel(settingsRepository = application.settingsRepository)
+            MagicCardViewModel(
+                settingsRepository = application.settingsRepository,
+                magicCardRepository = application.magicCardRepository)
         }
     }
 }
